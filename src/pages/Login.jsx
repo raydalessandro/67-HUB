@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
 import { Loader2 } from 'lucide-react'
 
 export default function Login() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -54,9 +56,11 @@ export default function Login() {
 
     if (error) {
       setError('Invalid email or password')
+      setLoading(false)
+    } else {
+      // Login successful, redirect to dashboard
+      navigate('/dashboard')
     }
-
-    setLoading(false)
   }
 
   return (
