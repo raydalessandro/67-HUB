@@ -244,7 +244,7 @@ export default function Calendar() {
                 data-day={dayNumber}
               >
                 <div className={`text-sm font-medium mb-1 w-7 h-7 flex items-center justify-center rounded-full ${
-                  today ? 'bg-67-gold text-black' : isCurrentMonth ? 'text-white' : 'text-gray-600'
+                  today ? 'bg-67-gold text-white' : isCurrentMonth ? 'text-white' : 'text-gray-600'
                 }`}>
                   {dayNumber}
                 </div>

@@ -64,10 +64,19 @@ export default function Layout() {
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-67-dark rounded-lg flex items-center justify-center">
+              <img
+                src="/logo.png"
+                alt="67 Label"
+                className="w-8 h-8 object-contain"
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                  e.target.nextSibling.style.display = 'flex'
+                }}
+              />
+              <div className="hidden w-8 h-8 bg-67-dark rounded-lg items-center justify-center">
                 <span className="text-sm font-black text-67-gold">67</span>
               </div>
-              <span className="font-bold text-white hidden sm:block">Hub</span>
+              <span className="font-bold text-white hidden sm:block">Label</span>
             </div>
           </div>
 
@@ -92,7 +101,7 @@ export default function Layout() {
             {/* Profile */}
             <div className="flex items-center gap-2 pl-2 border-l border-67-gray" data-testid="user-menu">
               <div className="w-8 h-8 rounded-full bg-67-gold flex items-center justify-center">
-                <span className="text-sm font-bold text-black">
+                <span className="text-sm font-bold text-white">
                   {profile?.display_name?.[0]?.toUpperCase() || '?'}
                 </span>
               </div>
@@ -120,7 +129,7 @@ export default function Layout() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                     isActive
-                      ? 'bg-67-gold text-black font-bold'
+                      ? 'bg-67-gold text-white font-bold'
                       : 'text-gray-400 hover:bg-67-gray hover:text-white'
                   }`
                 }
@@ -178,7 +187,7 @@ export default function Layout() {
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                         isActive
-                          ? 'bg-67-gold text-black font-bold'
+                          ? 'bg-67-gold text-white font-bold'
                           : 'text-gray-400 hover:bg-67-gray hover:text-white'
                       }`
                     }

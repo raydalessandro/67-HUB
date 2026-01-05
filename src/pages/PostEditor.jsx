@@ -234,7 +234,7 @@ export default function PostEditor() {
                 disabled={isLocked}
                 className={`px-4 py-3 rounded-xl border font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                   form.platform === platform.value
-                    ? 'bg-67-gold text-black border-67-gold'
+                    ? 'bg-67-gold text-white border-67-gold'
                     : 'bg-67-dark text-gray-400 border-67-gray hover:border-67-gold/50'
                 }`}
                 data-testid={`platform-button-${platform.value}`}
@@ -336,7 +336,7 @@ export default function PostEditor() {
           <button
             type="submit"
             disabled={saving || !form.title || !form.artist_id || isLocked}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-67-gold text-black font-bold rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-67-gold text-white font-bold rounded-xl hover:bg-67-amber transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             data-testid="submit-button"
           >
             {saving ? (

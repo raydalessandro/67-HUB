@@ -68,10 +68,21 @@ export default function Login() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-67-dark rounded-2xl mb-4">
-            <span className="text-4xl font-black text-67-gold">67</span>
+          <div className="inline-flex items-center justify-center mb-4">
+            <img
+              src="/logo.png"
+              alt="67 Label"
+              className="w-32 h-32 object-contain"
+              onError={(e) => {
+                e.target.style.display = 'none'
+                e.target.nextSibling.style.display = 'flex'
+              }}
+            />
+            <div className="hidden w-20 h-20 bg-67-dark rounded-2xl items-center justify-center">
+              <span className="text-4xl font-black text-67-gold">67</span>
+            </div>
           </div>
-          <h1 className="text-2xl font-bold text-white">67 Hub</h1>
+          <h1 className="text-2xl font-bold text-white">67 Label</h1>
           <p className="text-gray-500 text-sm mt-1">Artist Management Portal</p>
         </div>
 
@@ -128,7 +139,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-67-gold text-black font-bold rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-3 bg-67-gold text-white font-bold rounded-xl hover:bg-67-amber transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             data-testid="login-button"
           >
             {loading ? (

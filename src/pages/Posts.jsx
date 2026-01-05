@@ -123,7 +123,7 @@ export default function Posts() {
         {isStaff() && (
           <Link
             to="/posts/new"
-            className="flex items-center gap-2 px-4 py-2 bg-67-gold text-black font-bold rounded-xl hover:bg-yellow-400 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-67-gold text-white font-bold rounded-xl hover:bg-67-amber transition-colors"
             data-testid="new-post"
           >
             <Plus className="w-5 h-5" />

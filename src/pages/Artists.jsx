@@ -51,7 +51,7 @@ export default function Artists() {
           <p className="text-gray-500 mt-1">Manage your roster</p>
         </div>
         <button
-          className="flex items-center gap-2 px-4 py-2 bg-67-gold text-black font-bold rounded-xl hover:bg-yellow-400 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-67-gold text-white font-bold rounded-xl hover:bg-67-amber transition-colors"
           data-testid="create-artist"
         >
           <Plus className="w-5 h-5" />
@@ -136,7 +136,7 @@ export default function Artists() {
                   </Link>
                   <Link
                     to={`/chat`}
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-67-gold text-black text-sm font-bold rounded-lg hover:bg-yellow-400 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-67-gold text-white text-sm font-bold rounded-lg hover:bg-67-amber transition-colors"
                     data-testid="open-artist-chat"
                   >
                     Message

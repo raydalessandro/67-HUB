@@ -409,7 +409,7 @@ export default function PostDetail() {
               <button
                 onClick={handleAddComment}
                 disabled={!newComment.trim()}
-                className="p-2 bg-67-gold text-black rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-2 bg-67-gold text-white rounded-xl hover:bg-67-amber transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 data-testid="comment-submit"
               >
                 <Send className="w-5 h-5" />
@@ -471,7 +471,7 @@ export default function PostDetail() {
                   <button
                     onClick={handleSendToReview}
                     disabled={actionLoading}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 text-black font-bold rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-yellow-500 text-black font-bold rounded-xl hover:bg-67-amber transition-colors disabled:opacity-50"
                     data-testid="send-review-button"
                   >
                     <Clock className="w-5 h-5" />
