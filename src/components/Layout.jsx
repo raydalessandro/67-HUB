@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { 
-  LayoutDashboard, 
-  FileText, 
-  Calendar, 
-  MessageCircle, 
-  Users, 
+import {
+  LayoutDashboard,
+  FileText,
+  Calendar,
+  MessageCircle,
+  Users,
   Bell,
   LogOut,
   Menu,
@@ -19,7 +19,7 @@ export default function Layout() {
   const { unreadCount, fetchNotifications, subscribeToNotifications } = useNotificationStore()
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = React.useState(false)
-  
+
   useEffect(() => {
     if (profile?.id) {
       fetchNotifications(profile.id)
@@ -27,38 +27,39 @@ export default function Layout() {
       return unsubscribe
     }
   }, [profile?.id])
-  
+
   const handleSignOut = async () => {
     await signOut()
     navigate('/login')
   }
-  
+
   const staffNavItems = [
-    { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/posts', icon: FileText, label: 'Posts' },
-    { to: '/calendar', icon: Calendar, label: 'Calendar' },
-    { to: '/artists', icon: Users, label: 'Artists' },
-    { to: '/chat', icon: MessageCircle, label: 'Chat' },
+    { to: '/', icon: LayoutDashboard, label: 'Dashboard', testid: 'nav-dashboard' },
+    { to: '/posts', icon: FileText, label: 'Posts', testid: 'nav-posts' },
+    { to: '/calendar', icon: Calendar, label: 'Calendar', testid: 'nav-calendar' },
+    { to: '/artists', icon: Users, label: 'Artists', testid: 'nav-artists' },
+    { to: '/chat', icon: MessageCircle, label: 'Chat', testid: 'nav-chat' },
   ]
-  
+
   const artistNavItems = [
-    { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/posts', icon: FileText, label: 'My Posts' },
-    { to: '/calendar', icon: Calendar, label: 'Calendar' },
-    { to: '/chat', icon: MessageCircle, label: 'Chat' },
+    { to: '/', icon: LayoutDashboard, label: 'Dashboard', testid: 'nav-dashboard' },
+    { to: '/posts', icon: FileText, label: 'My Posts', testid: 'nav-posts' },
+    { to: '/calendar', icon: Calendar, label: 'Calendar', testid: 'nav-calendar' },
+    { to: '/chat', icon: MessageCircle, label: 'Chat', testid: 'nav-chat' },
   ]
-  
+
   const navItems = isStaff() ? staffNavItems : artistNavItems
-  
+
   return (
     <div className="min-h-screen bg-67-black flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-67-black/95 backdrop-blur-lg border-b border-67-gray safe-top">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="lg:hidden p-2 hover:bg-67-dark rounded-lg"
+              data-testid="hamburger-menu"
             >
               {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -69,52 +70,57 @@ export default function Layout() {
               <span className="font-bold text-white hidden sm:block">Hub</span>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {/* Notifications */}
             <NavLink
               to="/notifications"
               className="relative p-2 hover:bg-67-dark rounded-lg"
+              data-testid="notification-bell"
             >
               <Bell className="w-5 h-5 text-gray-400" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs font-bold flex items-center justify-center">
+                <span
+                  className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs font-bold flex items-center justify-center"
+                  data-testid="notification-badge"
+                >
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}
             </NavLink>
-            
+
             {/* Profile */}
-            <div className="flex items-center gap-2 pl-2 border-l border-67-gray">
+            <div className="flex items-center gap-2 pl-2 border-l border-67-gray" data-testid="user-menu">
               <div className="w-8 h-8 rounded-full bg-67-gold flex items-center justify-center">
                 <span className="text-sm font-bold text-black">
                   {profile?.display_name?.[0]?.toUpperCase() || '?'}
                 </span>
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-white leading-tight">
+                <p className="text-sm font-medium text-white leading-tight" data-testid="user-name">
                   {artist?.name || profile?.display_name}
                 </p>
-                <p className="text-xs text-gray-500 capitalize">{profile?.role}</p>
+                <p className="text-xs text-gray-500 capitalize" data-testid="user-role">{profile?.role}</p>
               </div>
             </div>
           </div>
         </div>
       </header>
-      
+
       <div className="flex flex-1">
         {/* Sidebar - Desktop */}
-        <aside className="hidden lg:flex flex-col w-64 bg-67-dark border-r border-67-gray">
+        <aside className="hidden lg:flex flex-col w-64 bg-67-dark border-r border-67-gray" data-testid="sidebar">
           <nav className="flex-1 p-4 space-y-1">
             {navItems.map(item => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 end={item.to === '/'}
+                data-testid={item.testid}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
-                    isActive 
-                      ? 'bg-67-gold text-black font-bold' 
+                    isActive
+                      ? 'bg-67-gold text-black font-bold'
                       : 'text-gray-400 hover:bg-67-gray hover:text-white'
                   }`
                 }
@@ -124,26 +130,27 @@ export default function Layout() {
               </NavLink>
             ))}
           </nav>
-          
+
           <div className="p-4 border-t border-67-gray">
             <button
               onClick={handleSignOut}
               className="flex items-center gap-3 px-4 py-3 w-full text-gray-400 hover:bg-67-gray hover:text-white rounded-xl transition-colors"
+              data-testid="logout-button"
             >
               <LogOut className="w-5 h-5" />
               Sign Out
             </button>
           </div>
         </aside>
-        
+
         {/* Mobile Menu Overlay */}
         {menuOpen && (
           <div className="fixed inset-0 z-40 lg:hidden">
-            <div 
+            <div
               className="absolute inset-0 bg-black/60"
               onClick={() => setMenuOpen(false)}
             />
-            <aside className="absolute left-0 top-0 bottom-0 w-72 bg-67-dark animate-fadeIn">
+            <aside className="absolute left-0 top-0 bottom-0 w-72 bg-67-dark animate-fadeIn" data-testid="mobile-menu">
               <div className="p-4 border-b border-67-gray">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-67-gold flex items-center justify-center">
@@ -152,14 +159,14 @@ export default function Layout() {
                     </span>
                   </div>
                   <div>
-                    <p className="font-medium text-white">
+                    <p className="font-medium text-white" data-testid="user-name">
                       {artist?.name || profile?.display_name}
                     </p>
-                    <p className="text-sm text-gray-500 capitalize">{profile?.role}</p>
+                    <p className="text-sm text-gray-500 capitalize" data-testid="user-role">{profile?.role}</p>
                   </div>
                 </div>
               </div>
-              
+
               <nav className="p-4 space-y-1">
                 {navItems.map(item => (
                   <NavLink
@@ -167,10 +174,11 @@ export default function Layout() {
                     to={item.to}
                     end={item.to === '/'}
                     onClick={() => setMenuOpen(false)}
+                    data-testid={item.testid}
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
-                        isActive 
-                          ? 'bg-67-gold text-black font-bold' 
+                        isActive
+                          ? 'bg-67-gold text-black font-bold'
                           : 'text-gray-400 hover:bg-67-gray hover:text-white'
                       }`
                     }
@@ -180,11 +188,12 @@ export default function Layout() {
                   </NavLink>
                 ))}
               </nav>
-              
+
               <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-67-gray safe-bottom">
                 <button
                   onClick={handleSignOut}
                   className="flex items-center gap-3 px-4 py-3 w-full text-gray-400 hover:bg-67-gray hover:text-white rounded-xl transition-colors"
+                  data-testid="logout-button"
                 >
                   <LogOut className="w-5 h-5" />
                   Sign Out
@@ -193,7 +202,7 @@ export default function Layout() {
             </aside>
           </div>
         )}
-        
+
         {/* Main Content */}
         <main className="flex-1 overflow-auto">
           <div className="p-4 lg:p-6 max-w-7xl mx-auto">
@@ -201,19 +210,20 @@ export default function Layout() {
           </div>
         </main>
       </div>
-      
+
       {/* Bottom Nav - Mobile */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-67-dark border-t border-67-gray safe-bottom">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-67-dark border-t border-67-gray safe-bottom" data-testid="mobile-nav">
         <div className="flex justify-around py-2">
           {navItems.slice(0, 5).map(item => (
             <NavLink
               key={item.to}
               to={item.to}
               end={item.to === '/'}
+              data-testid={item.testid}
               className={({ isActive }) =>
                 `flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors ${
-                  isActive 
-                    ? 'text-67-gold' 
+                  isActive
+                    ? 'text-67-gold'
                     : 'text-gray-500'
                 }`
               }
