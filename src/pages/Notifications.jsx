@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-  Bell, 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
+import {
+  Bell,
+  CheckCircle,
+  XCircle,
+  Clock,
   MessageCircle,
   Check
 } from 'lucide-react'
@@ -15,13 +15,13 @@ import { format, formatDistanceToNow } from 'date-fns'
 export default function Notifications() {
   const { profile } = useAuthStore()
   const { notifications, fetchNotifications, markAsRead, markAllAsRead } = useNotificationStore()
-  
+
   useEffect(() => {
     if (profile?.id) {
       fetchNotifications(profile.id)
     }
   }, [profile?.id])
-  
+
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'post_review':
@@ -36,7 +36,7 @@ export default function Notifications() {
         return <Bell className="w-5 h-5 text-gray-500" />
     }
   }
-  
+
   const getNotificationLink = (notification) => {
     if (notification.data?.post_id) {
       return `/posts/${notification.data.post_id}`
@@ -46,9 +46,9 @@ export default function Notifications() {
     }
     return '#'
   }
-  
+
   const unreadCount = notifications.filter(n => !n.read).length
-  
+
   return (
     <div className="space-y-4 pb-20 lg:pb-0">
       {/* Header */}
@@ -63,44 +63,48 @@ export default function Notifications() {
           <button
             onClick={() => markAllAsRead(profile.id)}
             className="flex items-center gap-2 px-3 py-2 text-sm text-67-gold hover:bg-67-dark rounded-lg transition-colors"
+            data-testid="mark-all-read"
           >
             <Check className="w-4 h-4" />
             Mark all read
           </button>
         )}
       </div>
-      
+
       {/* Notifications List */}
       {notifications.length === 0 ? (
-        <div className="text-center py-16">
+        <div className="text-center py-16" data-testid="notifications-empty">
           <Bell className="w-12 h-12 text-gray-600 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-white mb-1">No notifications</h3>
           <p className="text-gray-500">You're all caught up!</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2" data-testid="notifications-list">
           {notifications.map(notification => (
             <Link
               key={notification.id}
               to={getNotificationLink(notification)}
               onClick={() => !notification.read && markAsRead(notification.id)}
               className={`flex items-start gap-4 p-4 rounded-xl border transition-colors ${
-                notification.read 
-                  ? 'bg-67-dark border-67-gray' 
+                notification.read
+                  ? 'bg-67-dark border-67-gray'
                   : 'bg-67-gold/10 border-67-gold/30 hover:bg-67-gold/20'
               }`}
+              data-testid="notification-item"
+              data-notification-id={notification.id}
+              data-read={notification.read}
             >
               <div className="flex-shrink-0 mt-0.5">
                 {getNotificationIcon(notification.type)}
               </div>
               <div className="flex-1 min-w-0">
-                <p className={`font-medium ${notification.read ? 'text-gray-300' : 'text-white'}`}>
+                <p className={`font-medium ${notification.read ? 'text-gray-300' : 'text-white'}`} data-testid="notification-title">
                   {notification.title}
                 </p>
-                <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">
+                <p className="text-sm text-gray-500 mt-0.5 line-clamp-2" data-testid="notification-body">
                   {notification.body}
                 </p>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 mt-2" data-testid="notification-time">
                   {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                 </p>
               </div>

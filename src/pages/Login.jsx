@@ -6,24 +6,59 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
   const [loading, setLoading] = useState(false)
-  
+
   const signIn = useAuthStore(state => state.signIn)
-  
+
+  const validateEmail = (email) => {
+    if (!email) {
+      setEmailError('Email is required')
+      return false
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError('Email is invalid')
+      return false
+    }
+    setEmailError('')
+    return true
+  }
+
+  const validatePassword = (password) => {
+    if (!password) {
+      setPasswordError('Password is required')
+      return false
+    }
+    setPasswordError('')
+    return true
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
-    setLoading(true)
-    
-    const { error } = await signIn(email, password)
-    
-    if (error) {
-      setError(error.message)
+    setEmailError('')
+    setPasswordError('')
+
+    // Validate
+    const isEmailValid = validateEmail(email)
+    const isPasswordValid = validatePassword(password)
+
+    if (!isEmailValid || !isPasswordValid) {
+      return
     }
-    
+
+    setLoading(true)
+
+    const { error } = await signIn(email, password)
+
+    if (error) {
+      setError('Invalid email or password')
+    }
+
     setLoading(false)
   }
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-67-black">
       <div className="w-full max-w-sm">
@@ -35,9 +70,9 @@ export default function Login() {
           <h1 className="text-2xl font-bold text-white">67 Hub</h1>
           <p className="text-gray-500 text-sm mt-1">Artist Management Portal</p>
         </div>
-        
+
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" data-testid="login-form">
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-1.5">
               Email
@@ -46,12 +81,20 @@ export default function Login() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onBlur={(e) => validateEmail(e.target.value)}
               className="w-full px-4 py-3 bg-67-dark border border-67-gray rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-67-gold transition-colors"
               placeholder="your@email.com"
-              required
+              data-testid="email-input"
             />
+            {emailError && (
+              <p className="mt-1 text-sm text-red-400" data-testid={
+                emailError.includes('required') ? 'error-email-required' : 'error-email-invalid'
+              }>
+                {emailError}
+              </p>
+            )}
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-1.5">
               Password
@@ -60,22 +103,29 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onBlur={(e) => validatePassword(e.target.value)}
               className="w-full px-4 py-3 bg-67-dark border border-67-gray rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-67-gold transition-colors"
               placeholder="••••••••"
-              required
+              data-testid="password-input"
             />
+            {passwordError && (
+              <p className="mt-1 text-sm text-red-400" data-testid="error-password-required">
+                {passwordError}
+              </p>
+            )}
           </div>
-          
+
           {error && (
-            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm" data-testid="error-invalid-credentials">
               {error}
             </div>
           )}
-          
+
           <button
             type="submit"
             disabled={loading}
             className="w-full py-3 bg-67-gold text-black font-bold rounded-xl hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            data-testid="login-button"
           >
             {loading ? (
               <>
@@ -87,7 +137,7 @@ export default function Login() {
             )}
           </button>
         </form>
-        
+
         {/* Demo credentials */}
         <div className="mt-8 p-4 bg-67-dark rounded-xl">
           <p className="text-xs text-gray-500 mb-2">Demo Credentials:</p>
